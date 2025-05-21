@@ -21,7 +21,7 @@ export default function BottomNav({ links }: { links: NavLink[] }) {
       <div
         className="w-full sm:w-[400px] sm:rounded-full h-[75px]
       flex justify-around px-4 items-center border-t sm:border
-      border-t-black/10 sm:border-black/10 bg-black/10 backdrop-blur-2xl"
+      border-t-black/10 sm:border-black/10 bg-foreground/10 backdrop-blur-2xl"
       >
         {links.map((link, index) => {
           return (
