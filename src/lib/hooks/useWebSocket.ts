@@ -44,8 +44,8 @@ export function useWebSocket<T, M>(
     };
   }, [url, onMessage, onOpen, onClose, onError]);
 
-  const send = (type: string, payload: M) => {
-    const msg = JSON.stringify({ type, payload });
+  const send = (payload: M) => {
+    const msg = JSON.stringify(payload);
     socketRef.current?.send(msg);
   };
 
