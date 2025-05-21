@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import Authenticated from "@/components/providers/conditional/Authenticated";
 import BottomNav, { type NavLink } from "@/components/ui/bottom-nav";
-import { Home } from "lucide-react";
+import { Home, IdCard, Settings } from "lucide-react";
 import NotificationMenuButton from "@/components/ui/notification-menu-btn";
 
 export const metadata: Metadata = {
@@ -11,9 +11,19 @@ export const metadata: Metadata = {
 };
 const navLinks: NavLink[] = [
   {
-    name: "Home",
+    name: "Acceuil",
     href: "/",
     icon: <Home />,
+  },
+  {
+    name: "Accès",
+    href: "access-codes",
+    icon: <IdCard />
+  },
+  {
+    name: "Paramètres",
+    href: "/settings",
+    icon: <Settings />
   },
   {
     name: "Notifications",

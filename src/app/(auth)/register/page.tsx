@@ -17,7 +17,6 @@ import { register as registerFn } from "@/lib/api/requests/auth";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import Image from "next/image";
 import { Spinner } from "@/components/ui/spinner";
 import Logo from "@/components/ui/logo";
 
@@ -55,6 +54,7 @@ export default function Register() {
       first_name: firstName,
     });
   };
+
   return (
     <form className="w-full overflow-scroll py-8" onSubmit={register}>
       <div className="grid w-full grow items-center px-4 sm:justify-center gap-y-4">
@@ -67,24 +67,22 @@ export default function Register() {
                 className="py-4 border-destructive/30 bg-destructive/10"
               >
                 <X className="h-4 w-4" />
-                <AlertTitle>Error!</AlertTitle>
+                <AlertTitle>Erreur !</AlertTitle>
                 <AlertDescription>{errorMsg}</AlertDescription>
               </Alert>
             ) : null}
-            <CardTitle className="cursor-default">
-              Create your account
-            </CardTitle>
+            <CardTitle className="cursor-default">Créez votre compte</CardTitle>
             <CardDescription>
-              Welcome! Please fill in the details to get started.
+              Bienvenue ! Veuillez remplir les informations pour commencer.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-y-4">
             <div className="space-y-2">
-              <Label>Username</Label>
+              <Label>Nom d'utilisateur</Label>
               <Input
                 type="text"
                 required
-                placeholder="Type a username (ex. johndoe)"
+                placeholder="Tapez un nom d'utilisateur (ex. johndoe)"
                 name="username"
                 value={username}
                 onChange={(e) => {
@@ -95,12 +93,12 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label>First name</Label>
+              <Label>Prénom</Label>
               <Input
                 type="text"
                 required
                 name="first_name"
-                placeholder="Your first name (ex. Levi)"
+                placeholder="Votre prénom (ex. Levi)"
                 disabled={useRegister.isPending}
                 value={firstName}
                 onChange={(e) => {
@@ -111,12 +109,12 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label>Last name</Label>
+              <Label>Nom</Label>
               <Input
                 type="text"
                 required
                 name="last_name"
-                placeholder="Your last name (ex. Ackerman)"
+                placeholder="Votre nom (ex. Ackerman)"
                 disabled={useRegister.isPending}
                 value={lastName}
                 onChange={(e) => {
@@ -127,13 +125,13 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label>Email address</Label>
+              <Label>Adresse e-mail</Label>
               <Input
                 type="email"
                 required
                 name="email"
                 value={email}
-                placeholder="example@email.yay"
+                placeholder="exemple@email.yay"
                 disabled={useRegister.isPending}
                 onChange={(e) => {
                   setEmail(e.currentTarget.value);
@@ -143,11 +141,11 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>Mot de passe</Label>
               <Input
                 type="password"
                 required
-                placeholder="Type a password (8+ characters)"
+                placeholder="Tapez un mot de passe (8+ caractères)"
                 name="password"
                 value={password}
                 disabled={useRegister.isPending}
@@ -159,11 +157,11 @@ export default function Register() {
             </div>
 
             <div className="space-y-2">
-              <Label>Confirm password</Label>
+              <Label>Confirmez le mot de passe</Label>
               <Input
                 type="password"
                 required
-                placeholder="Confirm your password"
+                placeholder="Confirmez votre mot de passe"
                 name="password_confirm"
                 value={passwordConfirm}
                 disabled={useRegister.isPending}
@@ -181,10 +179,12 @@ export default function Register() {
                 {useRegister.isPending ? (
                   <Spinner className="stroke-background" size={"small"} />
                 ) : null}
-                Continue
+                Continuer
               </Button>
               <Button variant="link" size="sm" asChild>
-                <Link href="/login">Already have an account? Login</Link>
+                <Link href="/login">
+                  Vous avez déjà un compte ? Connectez-vous
+                </Link>
               </Button>
             </div>
           </CardFooter>
