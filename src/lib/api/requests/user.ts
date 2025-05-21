@@ -13,3 +13,19 @@ export async function getCurrentUser() {
   }
   return data;
 }
+
+export async function updloadProfilePicture(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const request = ky
+    .put<UserDTO>(`${API_URL}/me/profile-picture`, {
+      credentials: "include",
+      body: formData,
+    })
+    .json();
+  const [data, error] = await resolveRequest(request);
+  if (error) {
+    throw new Error(error.detail);
+  }
+  return data;
+}

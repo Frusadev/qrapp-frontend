@@ -34,8 +34,7 @@ export default function NotificationsPage() {
       <Show _if={notifications?.count === 0 || notifications === null}>
         <div className="w-full h-full flex items-center justify-center">
           <span className="text-foreground/50 text-lg select-none">
-
-          Aucune notification
+            Aucune notification
           </span>
         </div>
       </Show>
@@ -66,7 +65,9 @@ export default function NotificationsPage() {
               >
                 <X className="stroke-gray-400" />
               </Button>
-              <span className="text-lg font-medium">{notificationData.message}</span>
+              <span className="text-lg font-medium">
+                {notificationData.message}
+              </span>
               <div className="w-full flex justify-between">
                 <span className="text-foreground/50 text-sm justify-self-end">
                   {timeAgo(notificationData.created_at)}
@@ -76,7 +77,7 @@ export default function NotificationsPage() {
                   className={`${buttonVariants({ variant: "default" })}
                   justify-self-end self-center`}
                   onClick={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     notifWebSocket.send({
                       action: "view",
                       notif_id: notificationData.notification_id,
