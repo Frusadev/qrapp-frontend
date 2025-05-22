@@ -76,16 +76,31 @@ export async function generateAccessCode({
   accessType,
   data,
 }: { accessType: "basic" | "secure"; data: AccessCodeCreationDTO }) {
-  const request = ky.post<MessageResponse>(`${API_URL}/access-code`, {
-    credentials: "include",
-    searchParams: {
-      access_type: accessType,
-    },
-    json: data,
-  }).json();
+  const request = ky
+    .post<MessageResponse>(`${API_URL}/access-code`, {
+      credentials: "include",
+      searchParams: {
+        access_type: accessType,
+      },
+      json: data,
+    })
+    .json();
   const [response, error] = await resolveRequest(request);
   if (error) {
-    return error
+    return error;
   }
-  return response
+  return response;
+}
+
+export async function deleteAccessCode(accessCodeId: string) {
+  const request = ky
+    .delete<MessageResponse>(`${API_URL}/access-code/${accessCodeId}`, {
+      credentials: "include",
+    })
+    .json();
+  const [response, error] = await resolveRequest(request);
+  if (error) {
+    return error;
+  }
+  return response;
 }

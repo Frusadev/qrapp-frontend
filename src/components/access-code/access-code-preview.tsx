@@ -4,8 +4,12 @@ import { fr } from "date-fns/locale";
 import { AccessCodeDTO } from "@/lib/api/dto/accessCode";
 import { Button, buttonVariants } from "../ui/button";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getFileURL } from "@/lib/api/requests/fileResource";
+
+import { Trash2 } from "lucide-react"; // ⬅ For delete icon
+import { deleteAccessCode } from "@/lib/api/requests/accessCode";
+import { toast } from "sonner";
 
 export default function AccessCodePreview({
   accessCode,
@@ -23,6 +27,21 @@ export default function AccessCodePreview({
     });
 
   const { data: qrcodeUrl } = useFileURL(accessCode.qrcode_resource_id);
+
+  const deleteAccessCodeMutation = useMutation({
+    mutationKey: ["delete-access-code"],
+    mutationFn: deleteAccessCode,
+    onSuccess: () => {
+      toast.success("Accès supprimé");
+    }
+  })
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent parent div click
+    deleteAccessCodeMutation.mutate(accessCode.access_code_id)
+    window.location.reload();
+  };
+
   return (
     <div
       onClick={() => {
@@ -33,6 +52,14 @@ export default function AccessCodePreview({
   flex justify-start h-[100px] w-full sm:w-[500px] rounded-md
   relative`}
     >
+      {/* 🗑 Delete button (top-right corner) */}
+      <button
+        onClick={handleDelete}
+        className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+      >
+        <Trash2 size={18} />
+      </button>
+
       <div className="h-[95%] w-[95px]">
         <Image
           src={qrcodeUrl ?? "/no-media"}
@@ -42,6 +69,7 @@ export default function AccessCodePreview({
           height={95}
         />
       </div>
+
       <div
         className="h-full w-full flex flex-col items-center justify-around
         select-none"
