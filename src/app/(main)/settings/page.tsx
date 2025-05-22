@@ -15,7 +15,6 @@ import { getInfofields } from "@/lib/api/requests/infofield";
 import { getCurrentUser } from "@/lib/api/requests/user";
 import { useQuery } from "@tanstack/react-query";
 import { Plus, X } from "lucide-react";
-import { use } from "react";
 
 export default function SettingsPage() {
   const { data: currentUser } = useQuery({

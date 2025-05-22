@@ -6,6 +6,7 @@ import {
   NotificationResponse,
 } from "@/lib/api/dto/notification";
 import { useWebSocket } from "@/lib/hooks/useWebSocket";
+import { useNotificationsCount } from "@/lib/stores/notification";
 import { timeAgo } from "@/lib/utils";
 import { X } from "lucide-react";
 import Link from "next/link";
@@ -20,6 +21,8 @@ export default function NotificationsPage() {
   const onMessage = useCallback((message: NotificationResponse) => {
     setNotifications(message);
   }, []);
+
+  const { setNotificationCount } = useNotificationsCount();
 
   const notifWebSocket = useWebSocket<
     NotificationResponse,
@@ -46,7 +49,7 @@ export default function NotificationsPage() {
           {notifications?.data.map((notificationData) => (
             <div
               className={`border-b border-b-border min-h-20 sm:w-[425px]
-              rounded-none hover:bg-muted transition-colors
+              rounded-none hover:bg-muted transition-colors w-full
               items-start flex-col flex select-none relative
               p-1 px-2 gap-2`}
               key={notificationData.notification_id}
@@ -61,13 +64,12 @@ export default function NotificationsPage() {
                     action: "delete",
                     notif_id: notificationData.notification_id,
                   });
+                  setNotificationCount(notifications.count);
                 }}
               >
                 <X className="stroke-gray-400" />
               </Button>
-              <span className="text-lg font-medium">
-                {notificationData.message}
-              </span>
+              <span className="font-medium">{notificationData.message}</span>
               <div className="w-full flex justify-between">
                 <span className="text-foreground/50 text-sm justify-self-end">
                   {timeAgo(notificationData.created_at)}
