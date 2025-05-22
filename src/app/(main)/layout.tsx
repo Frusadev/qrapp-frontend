@@ -4,6 +4,8 @@ import Authenticated from "@/components/providers/conditional/Authenticated";
 import BottomNav, { type NavLink } from "@/components/ui/bottom-nav";
 import { Home, IdCard, Settings } from "lucide-react";
 import NotificationMenuButton from "@/components/ui/notification-menu-btn";
+import ThemeSwitch from "@/components/ui/theme-switch";
+import NotificationsProvider from "@/components/providers/query/NotificationsProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,12 +20,12 @@ const navLinks: NavLink[] = [
   {
     name: "Accès",
     href: "access-codes",
-    icon: <IdCard />
+    icon: <IdCard />,
   },
   {
     name: "Paramètres",
     href: "/settings",
-    icon: <Settings />
+    icon: <Settings />,
   },
   {
     name: "Notifications",
@@ -39,6 +41,10 @@ export default function RootLayout({
   return (
     <Authenticated>
       <div className="h-screen w-screen relative flex">
+        <div className="absolute flex justify-end top-0 right-0 z-30">
+          <NotificationsProvider />
+          <ThemeSwitch />
+        </div>
         {children}
         <BottomNav links={navLinks} />
       </div>

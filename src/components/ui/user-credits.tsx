@@ -9,7 +9,7 @@ export default function UserCreditsCount({
   isLoading,
 }: { count?: number; isLoading: boolean }) {
   return (
-    <div className="flex w-full justify-end p-4">
+    <div className="flex w-full justify-start p-4">
       <div className="z-20">
         <Show
           _if={!isLoading}

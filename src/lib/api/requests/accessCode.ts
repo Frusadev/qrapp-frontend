@@ -1,5 +1,6 @@
 import ky from "ky";
 import type {
+  AccessCodeCreationDTO,
   AccessCodeDTO,
   AccessCodePasswordSetDTO,
 } from "../dto/accessCode";
@@ -53,4 +54,38 @@ export async function authorizeAccessCode({
     throw new Error(error.detail);
   }
   return data;
+}
+
+export async function getAccessCodeCost(ac_type: "basic" | "secure") {
+  const request = ky
+    .get<number>(`${API_URL}/access-code/costs/`, {
+      credentials: "include",
+      searchParams: {
+        ac_type: ac_type,
+      },
+    })
+    .json();
+  const [data, error] = await resolveRequest(request);
+  if (error) {
+    throw new Error(error.detail);
+  }
+  return data;
+}
+
+export async function generateAccessCode({
+  accessType,
+  data,
+}: { accessType: "basic" | "secure"; data: AccessCodeCreationDTO }) {
+  const request = ky.post<MessageResponse>(`${API_URL}/access-code`, {
+    credentials: "include",
+    searchParams: {
+      access_type: accessType,
+    },
+    json: data,
+  }).json();
+  const [response, error] = await resolveRequest(request);
+  if (error) {
+    return error
+  }
+  return response
 }
