@@ -1,5 +1,5 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -7,11 +7,10 @@ import { createInfofield } from "@/lib/api/requests/infofield";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function InfofieldCreationBox({
-  refetchFunction,
-}: { refetchFunction?: () => void }) {
+export default function InfofieldCreationBox() {
   const [fieldName, setFieldName] = useState("");
   const [fieldContent, setFieldContent] = useState("");
+  const queryClient = useQueryClient();
 
   const useCreateInfofield = useMutation({
     mutationKey: ["/infofields"],
@@ -21,17 +20,11 @@ export default function InfofieldCreationBox({
         "Une erreur est survenue lors de la création du champ d'information.",
       );
     },
-
     onSuccess: () => {
       toast.success("Champ d'information créé avec succès.");
       setFieldName("");
       setFieldContent("");
-      (
-        refetchFunction ??
-        (() => {
-          window.location.reload();
-        })
-      )();
+      queryClient.invalidateQueries({ queryKey: ["/infofields"] });
     },
   });
 

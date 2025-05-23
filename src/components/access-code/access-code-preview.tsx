@@ -2,12 +2,12 @@
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AccessCodeDTO } from "@/lib/api/dto/accessCode";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import Image from "next/image";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFileURL } from "@/lib/api/requests/fileResource";
 
-import { Trash2 } from "lucide-react"; // ⬅ For delete icon
+import { Trash2 } from "lucide-react";
 import { deleteAccessCode } from "@/lib/api/requests/accessCode";
 import { toast } from "sonner";
 
@@ -20,6 +20,7 @@ export default function AccessCodePreview({
   currentResourceIdStateSetter: (s?: string) => void;
   currentAccessCodeSetter: (ac: AccessCodeDTO | null) => void;
 }) {
+  const queryClient = useQueryClient();
   const useFileURL = (resourceId?: string) =>
     useQuery({
       queryKey: ["/resources/files", resourceId],
@@ -33,13 +34,13 @@ export default function AccessCodePreview({
     mutationFn: deleteAccessCode,
     onSuccess: () => {
       toast.success("Accès supprimé");
-    }
-  })
+      queryClient.invalidateQueries({ queryKey: ["/access-codes"] });
+    },
+  });
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation(); // prevent parent div click
-    deleteAccessCodeMutation.mutate(accessCode.access_code_id)
-    window.location.reload();
+    deleteAccessCodeMutation.mutate(accessCode.access_code_id);
   };
 
   return (
@@ -64,7 +65,7 @@ export default function AccessCodePreview({
         <Image
           src={qrcodeUrl ?? "/no-media"}
           alt="QR code"
-          className="w-full h-full"
+          className="w-full h-full rounded-[.5rem]"
           width={90}
           height={95}
         />
