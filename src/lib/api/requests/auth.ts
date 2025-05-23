@@ -62,3 +62,14 @@ export async function isAuthenticated() {
   }
   return data;
 }
+
+export async function logout() {
+  const request = ky.post<MessageResponse>(`${API_URL}/auth/logout`, {
+    credentials: "include",
+  }).json();
+  const [data, error] = await resolveRequest(request);
+  if (error) {
+    throw new Error(error.detail);
+  }
+  return data;
+}

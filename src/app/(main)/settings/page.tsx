@@ -5,16 +5,24 @@ import InfofieldCreationBox from "@/components/infofield/infofield-creation";
 import Show from "@/components/providers/conditional/Show";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import UserProfilePicture from "@/components/user/user-profile-picture";
+import { logout } from "@/lib/api/requests/auth";
 import { getInfofields } from "@/lib/api/requests/infofield";
 import { getCurrentUser } from "@/lib/api/requests/user";
-import { useQuery } from "@tanstack/react-query";
-import { Plus, X } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
 
 export default function SettingsPage() {
   const { data: currentUser } = useQuery({
@@ -22,13 +30,17 @@ export default function SettingsPage() {
     queryFn: getCurrentUser,
   });
 
-  const {
-    data: infofields,
-    isLoading: isLoadingInfofields,
-    refetch: refetchInfofields,
-  } = useQuery({
+  const { data: infofields, isLoading: isLoadingInfofields } = useQuery({
     queryKey: ["/infofields"],
     queryFn: getInfofields,
+  });
+
+  const logoutMutation = useMutation({
+    mutationKey: ["/logout"],
+    mutationFn: logout,
+    onSuccess: () => {
+      window.location.href = "/";
+    }
   });
 
   return (
@@ -51,6 +63,28 @@ export default function SettingsPage() {
               >
                 {currentUser?.verified ? "Vérifié" : "Compte non vérifié"}
               </span>
+              <div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant={"destructive"}>Se déconnecter</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-light">
+                        Êtes-vous sûr de vouloir vous déconnecter ?
+                      </span>
+                      <div className="flex w-full justify-end gap-2">
+                        <Button
+                          variant={"outline"}
+                          onClick={() => {logoutMutation.mutate()}}
+                        >
+                          Se déconnecter
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
           </div>
           <div
@@ -62,7 +96,8 @@ export default function SettingsPage() {
                 Adresse email : {currentUser?.email}
               </span>
               <span className="font-light text-sm">
-                Crédits : <span className="font-semibold">{currentUser?.credits}</span>
+                Crédits :{" "}
+                <span className="font-semibold">{currentUser?.credits}</span>
               </span>
             </div>
           </div>
@@ -77,7 +112,7 @@ export default function SettingsPage() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <InfofieldCreationBox refetchFunction={refetchInfofields} />
+                <InfofieldCreationBox />
               </PopoverContent>
             </Popover>
             <div className="flex w-full flex-col items-center gap-1 mt-4 h-[250px] overflow-y-auto">
@@ -91,11 +126,7 @@ export default function SettingsPage() {
                 </span>
               </Show>
               {(infofields ?? []).map((infofield) => (
-                <InfofieldCard
-                  infofield={infofield}
-                  key={infofield.field_id}
-                  refetchFunction={refetchInfofields}
-                />
+                <InfofieldCard infofield={infofield} key={infofield.field_id} />
               ))}
             </div>
           </div>

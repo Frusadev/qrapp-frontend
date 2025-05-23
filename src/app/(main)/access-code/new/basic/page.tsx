@@ -21,8 +21,13 @@ export default function BasicAccessCodeCreationPage() {
   const generateAccessCodeMutation = useMutation({
     mutationKey: ["/access-code", "basic"],
     mutationFn: generateAccessCode,
-    onSuccess: () => toast.success("Accès généré avec succès ! Merci de vérifier votre boîte mail."),
-    onError: (e) => toast.error(e.message),
+    onSuccess: () =>
+      toast.success(
+        "Accès généré avec succès ! Merci de vérifier votre boîte mail.",
+      ),
+    onError: (e) => {
+      toast.error(e.message);
+    },
   });
   return (
     <div className="w-full h-full px-4 py-2 flex flex-col">

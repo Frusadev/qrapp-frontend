@@ -7,6 +7,9 @@ import { ThemeProvider } from "@/components/providers/ui/ThemeProvider";
 export const metadata: Metadata = {
   title: "QRApp",
   description: "No more card loss.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -18,9 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="w-screen h-screen">
         <QueryProvider>
-          <ThemeProvider attribute={"class"}>
-            {children}
-          </ThemeProvider>
+          <ThemeProvider attribute={"class"}>{children}</ThemeProvider>
         </QueryProvider>
         <Toaster />
       </body>
