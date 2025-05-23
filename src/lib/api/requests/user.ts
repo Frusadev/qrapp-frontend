@@ -2,6 +2,7 @@ import ky from "ky";
 import type { UserDTO } from "../dto/user";
 import { API_URL } from "@/lib/config/env";
 import { resolveRequest } from "../utils";
+import type { MessageResponse } from "../dto/message";
 
 export async function getCurrentUser() {
   const request = ky
@@ -29,3 +30,4 @@ export async function updloadProfilePicture(file: File) {
   }
   return data;
 }
+

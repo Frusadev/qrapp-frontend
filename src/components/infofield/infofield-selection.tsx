@@ -26,6 +26,7 @@ export default function InfofieldSelect({
           infofieldProps.selected = Boolean(state.valueOf());
         }}
         className="z-10"
+        onClick={(e) => {e.stopPropagation()}}
       />
       <Label htmlFor={infofieldProps.infofield.field_id}>
         {infofieldProps.infofield.name}
