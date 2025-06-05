@@ -174,4 +174,4 @@ The frontend integrates with a backend API server. Key API endpoints include:
 
 ## License
 
-This project is private and proprietary.
+MIT
